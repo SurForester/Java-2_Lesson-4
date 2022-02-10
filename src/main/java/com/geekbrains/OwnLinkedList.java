@@ -25,6 +25,72 @@ public class OwnLinkedList<T> {
         size++;
     }
 
+    public void addNode(T data, long index) {
+        // проверка на входимость индекса в список
+        if (index > (size - 1) || index < 0) {
+            System.out.println("Index beyond the frontier of array");
+            return;
+        }
+        Node newNode = new Node(data);
+        // если это голова
+        if (index == 0) {
+            Node headNext = head;
+            head = newNode;
+            newNode.next = headNext;
+            size++;
+            return;
+        }
+        // вставка в тушку
+        Node current = head;
+        long counter = 0;
+
+        while (current != null && counter < index) {
+            current = current.next;
+            counter++;
+        }
+        // встраиваем
+        if (index == (size - 1)) {
+            tail.next = newNode;
+            tail = newNode;
+        } else {
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+        size++;
+    }
+
+    public void deleteNodeAtIndex(long index) {
+        if (index > (size - 1) || index < 0) {
+            System.out.println("Index beyond the frontier of array");
+            return;
+        }
+        // если это голова
+        if (index == 0) {
+            Node deletedNode = head;
+            head = head.next;
+            deletedNode = null;
+            size--;
+            return;
+        }
+        Node current = head;
+        long counter = 0;
+
+        while (current != null && counter < (index - 1)) {
+            current = current.next;
+            counter++;
+        }
+        // удаляем
+        Node deletedNode = current.next;
+        if (index == (size - 1)) {
+            tail = current;
+            tail.next = null;
+        } else {
+            current.next = deletedNode.next;
+        }
+        deletedNode = null;
+        size--;
+    }
+
     public void display() {
         Node current = head;
 
@@ -55,7 +121,6 @@ public class OwnLinkedList<T> {
 
         System.out.println(current.data);
     }
-
 
     private class Node {
         T data;
